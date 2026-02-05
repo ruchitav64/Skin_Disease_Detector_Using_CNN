@@ -1,7 +1,18 @@
+import os
+import gdown
 from flask import Flask, render_template, request
 from predict import predict_image
 
 app = Flask(__name__)
+
+MODEL_PATH = "skin_disease_model.h5"
+
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model...")
+    url = os.environ.get("MODEL_URL")
+    gdown.download(url, MODEL_PATH, quiet=False)
+
+model= load_model(MODEL_PATH)
 
 # Categories of diseases
 categories = ['eczema', 'melanoma', 'atopic_dermatitis', 'basal_cell_carcinoma', 'melanotic_nevi']
